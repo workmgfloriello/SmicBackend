@@ -11,7 +11,7 @@ if (!isset($data["email"], $data["password"],$data["name"], $data["address"], $d
 }
 
 $dati = [
-    "uuid" => uniqid(),
+    "uuid" => bin2hex(random_bytes(16)),
     "email" => $data["email"],
     "password" => hashPassword($data["password"]),
     "name" => $data["name"],
@@ -19,4 +19,4 @@ $dati = [
     "phone" => $data["phone"]
 ];
 
-return sendData("users", $dati);
+echo sendData("users", $dati);

@@ -6,7 +6,6 @@ require_once "./shared/tokenManager.php";
 header("Content-Type: application/json");
 
 $method = $_SERVER["REQUEST_METHOD"];
-echo "API: login, Method: $method\n";
 
 if ($method !== "POST") {
     http_response_code(405);
