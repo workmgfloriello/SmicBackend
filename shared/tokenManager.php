@@ -20,7 +20,6 @@ echo "Saving token: $cookieString\n";
 }
 
 function verifyToken() {
-    // Implement token verification logic here
     $cookieToken = $_COOKIE["auth_token"] ?? null;
     if (!$cookieToken) {
         return false;
