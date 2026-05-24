@@ -47,7 +47,7 @@ if (!verifyPassword($password, $userData["password"])) {
 $token = createToken();
 saveCookieToken($token, $userData["uuid"]);
 
-sendData("users", ["token" => $token], ["uuid" => $userData["uuid"]]);
+sendData("users", ["token" =>hash('sha256', $token)], ["uuid" => $userData["uuid"]]);
 
 // Successo
 echo json_encode([

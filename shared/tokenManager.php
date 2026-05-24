@@ -9,14 +9,12 @@ function createToken(){
 function saveCookieToken($token, $uuid)
 {
     $cookieString = "$token|$uuid";
-echo "Saving token: $cookieString\n";
     setcookie(
         "auth_token",
         $cookieString,
         time() + 8400,
         "/"
     );
-    echo $_COOKIE["auth_token"] ?? "Cookie not set yet\n";
 }
 
 function verifyToken() {
@@ -27,7 +25,7 @@ function verifyToken() {
 
     list($storedToken, $uuid) = explode("|", $cookieToken);
 
-    $result = getData("users", ["token" => $storedToken], "uuid");
+    $result = getData("users", ["token" => hash('sha256', $storedToken)], "uuid");
 
     if(!$result || count($result) == 0) {
         return false;
