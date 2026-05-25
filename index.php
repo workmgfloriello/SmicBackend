@@ -7,15 +7,19 @@ $api = $_GET["api"] ?? "";
 switch ($api) {
 
     case "register":
-        require_once "./auth/register.php";
+        require_once "./Auth/register.php";
         break;
     
     case "login":
-        require_once "./auth/login.php";
+        require_once "./Auth/login.php";
+        break;
+
+    case "logout":
+        require_once "./Auth/logout.php";
         break;
 
     case "profile":
-        require_once "./auth/profile.php";
+        require_once "./Auth/profile.php";
         break;
     //http://localhost/SmicBackend?api=products&category=Gelati
     case "products":
