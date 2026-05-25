@@ -45,15 +45,13 @@ if (!verifyPassword($password, $userData["password"])) {
 
 // Crea token e salva nel database
 $token = createToken();
-saveCookieToken($token, $userData["uuid"]);
+
 
 sendData("users", ["token" =>hash('sha256', $token)], ["uuid" => $userData["uuid"]]);
 
 // Successo
 echo json_encode([
     "success" => true,
-    "user" => [
-        "uuid" => $userData["uuid"],
-        "email" => $userData["email"]
-    ]
+    "uuid" => $userData["uuid"],
+    "token"=>$token
 ]);

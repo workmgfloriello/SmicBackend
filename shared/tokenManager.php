@@ -6,34 +6,30 @@ function createToken(){
     return $token;
 }
 
-function saveCookieToken($token, $uuid)
-{
-    $cookieString = "$token|$uuid";
-    setcookie(
-        "auth_token",
-        $cookieString,
-        time() + 8400,
-        "/"
-    );
-}
+function verifyToken(): string|false {
+    // Il frontend manda il token nell'header Authorization: Bearer <token>
+    $headers = getallheaders();
+    $authHeader = $headers["Authorization"] ?? $headers["authorization"] ?? null;
 
-function verifyToken() {
-    $cookieToken = $_COOKIE["auth_token"] ?? null;
-    if (!$cookieToken) {
+    if (!$authHeader || !str_starts_with($authHeader, "Bearer ")) {
         return false;
     }
 
-    list($storedToken, $uuid) = explode("|", $cookieToken);
+    $token = substr($authHeader, 7); // Rimuove "Bearer "
 
-    $result = getData("users", ["token" => hash('sha256', $storedToken)], "uuid");
-
-    if(!$result || count($result) == 0) {
+    if (empty($token)) {
         return false;
-    }else{
-        return json_encode([
+    }
+
+    $result = getData("users", ["token" => hash("sha256", $token)], "uuid");
+
+    if (!$result || count($result) === 0) {
+        return false;
+    }
+
+    return json_encode([
         "success" => true,
         "message" => "Token valido",
-        "uuid" => $uuid
-    ]); 
-    }
+        "uuid"    => $result[0]["uuid"]
+    ]);
 }
